@@ -3,7 +3,6 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { RainbowButton } from "@/components/ui/rainbow-button";
 import { VercelChat } from "@/components/ui/vercel-chat";
 import { BorderBeam } from "@/components/ui/border-beam";
 
@@ -13,6 +12,7 @@ const agents = [
     description: "Most Powerful Agent",
     longDescription: "Experience the power of advanced AI research and data analysis with our flagship agent.",
     href: "/agents/aidr",
+    buttonText: "Meet AIDR",
     icon: (className?: string) => (
       <svg 
         viewBox="0 0 24 24" 
@@ -33,6 +33,7 @@ const agents = [
     description: "Process Optimization Agent",
     longDescription: "Transform your operations with AI-powered optimization and automation.",
     href: "/agents/aido",
+    buttonText: "Meet AIDO",
     icon: (className?: string) => (
       <svg 
         viewBox="0 0 24 24" 
@@ -53,6 +54,7 @@ const agents = [
     description: "Customer Support Agent",
     longDescription: "Experience seamless customer support with our AI-powered assistant that understands and responds in real-time.",
     href: "/agents/aidy",
+    buttonText: "Demo",
     icon: (className?: string) => (
       <svg 
         viewBox="0 0 24 24" 
@@ -146,15 +148,15 @@ export function AgentsPreview() {
 
                 {/* Action Button - Centered at bottom */}
                 <div className="mt-4 w-full px-4">
-                  <RainbowButton 
+                  <Link 
                     href={agent.href}
-                    className="w-full text-[11px] font-light tracking-wider py-1"
+                    className="group relative inline-flex h-11 animate-rainbow cursor-pointer items-center justify-center rounded-xl border-0 bg-[length:200%] px-8 py-2 font-medium text-primary-foreground transition-colors [background-clip:padding-box,border-box,border-box] [background-origin:border-box] [border:calc(0.08*1rem)_solid_transparent] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 w-full text-[11px] font-light tracking-wider py-1"
                   >
                     <span className="flex items-center justify-center gap-1.5">
-                      {agent.name === "AIDY" ? "Demo" : `Meet ${agent.name}`}
-                      <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                      {agent.buttonText}
+                      <ArrowRight className="h-4 w-4" />
                     </span>
-                  </RainbowButton>
+                  </Link>
                 </div>
               </div>
             </motion.div>
