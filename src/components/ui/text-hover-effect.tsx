@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 
 export const TextHoverEffect = ({
   text,
+  className,
 }: {
   text: string;
+  className?: string;
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
@@ -34,7 +36,7 @@ export const TextHoverEffect = ({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onMouseMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
-      className="select-none"
+      className={`${className} select-none`}
     >
       <defs>
         <linearGradient
