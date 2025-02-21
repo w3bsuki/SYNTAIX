@@ -45,16 +45,20 @@ export const SparklesCore = (props: ParticlesProps) => {
   }, [particlesInit]);
 
   const generatedId = useCallback(() => {
-    return Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substring(2, 9);
   }, []);
 
   return (
-    <motion.div animate={controls} className={`opacity-0 ${className}`}>
+    <motion.div
+      animate={controls}
+      className={className}
+      style={{ opacity: 0 }}
+    >
       {init && (
         <Particles
-          id={id || generatedId()}
-          className={`h-full w-full`}
-          particlesLoaded={particlesLoaded}
+          id={id ?? generatedId()}
+          className={className}
+          loaded={particlesLoaded}
           options={{
             background: {
               color: {

@@ -169,6 +169,7 @@ export function PlaceholdersAndVanishInput({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    vanishAndSubmit();
     if (onSubmit) {
       onSubmit(e);
     }
