@@ -5,10 +5,13 @@ import type { Container } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { motion, useAnimation } from "framer-motion";
 
-type ParticleOptions = {
-  value: string | number | object;
-  [key: string]: any;
-};
+interface ParticleValue {
+  value: string | number | Record<string, unknown>;
+}
+
+interface ParticleOptions extends Record<string, ParticleValue | unknown> {
+  value: ParticleValue;
+}
 
 type ParticlesProps = {
   id?: string;
@@ -16,7 +19,7 @@ type ParticlesProps = {
   options?: ParticleOptions;
 };
 
-type ParticlesLoadedCallback = (container: Container) => void;
+type ParticlesLoadedCallback = (container: Container) => Promise<void>;
 
 export const SparklesCore = (props: ParticlesProps) => {
   const { id, className, options } = props;

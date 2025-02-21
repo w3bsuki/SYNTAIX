@@ -17,14 +17,6 @@ export function PlaceholdersAndVanishInput({
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  interface TransitionEvent {
-    target: HTMLElement;
-  }
-
-  interface AnimationEvent {
-    target: HTMLElement;
-  }
-
   const handleVisibilityChange = useCallback(() => {
     if (!document.hidden) {
       startAnimation();
@@ -176,6 +168,28 @@ export function PlaceholdersAndVanishInput({
     e.preventDefault();
     vanishAndSubmit();
     onSubmit && onSubmit(e);
+  };
+
+  const handleTransitionEnd = (event: { target: HTMLElement }) => {
+    const target = event.target;
+    if (target.classList.contains("vanish-input")) {
+      setAnimating(false);
+    }
+  };
+
+  const handleAnimationIteration = (event: { target: HTMLElement }) => {
+    const target = event.target;
+    if (target.classList.contains("vanish-input")) {
+      setAnimating(true);
+    }
+  };
+
+  const handleReset = () => {
+    const elements = document.querySelectorAll(".vanish-input");
+    for (const element of Array.from(elements)) {
+      const targetElement = element as HTMLElement;
+      targetElement.style.opacity = "0";
+    }
   };
 
   return (
