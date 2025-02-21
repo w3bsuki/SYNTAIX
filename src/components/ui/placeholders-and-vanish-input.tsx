@@ -17,9 +17,13 @@ export function PlaceholdersAndVanishInput({
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  type CustomEvent = {
+  interface TransitionEvent {
     target: HTMLElement;
-  };
+  }
+
+  interface AnimationEvent {
+    target: HTMLElement;
+  }
 
   const handleVisibilityChange = useCallback(() => {
     if (!document.hidden) {
@@ -31,7 +35,7 @@ export function PlaceholdersAndVanishInput({
     intervalRef.current = setInterval(() => {
       setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
     }, 3000);
-  }, []);
+  }, [placeholders.length]);
 
   useEffect(() => {
     startAnimation();
@@ -42,7 +46,7 @@ export function PlaceholdersAndVanishInput({
   }, [handleVisibilityChange, startAnimation]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const newDataRef = useRef<any[]>([]);
+  const newDataRef = useRef<number[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState("");
   const [animating, setAnimating] = useState(false);

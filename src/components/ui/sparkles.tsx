@@ -5,15 +5,21 @@ import type { Container } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { motion, useAnimation } from "framer-motion";
 
+type ParticleOptions = {
+  value: string | number | object;
+  [key: string]: any;
+};
+
 type ParticlesProps = {
   id?: string;
   className?: string;
+  options?: ParticleOptions;
 };
 
 type ParticlesLoadedCallback = (container: Container) => void;
 
 export const SparklesCore = (props: ParticlesProps) => {
-  const { id, className } = props;
+  const { id, className, options } = props;
   const [init, setInit] = useState(false);
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -54,9 +60,8 @@ export const SparklesCore = (props: ParticlesProps) => {
             },
             fullScreen: {
               enable: false,
-              zIndex: 1,
+              zIndex: 0,
             },
-
             fpsLimit: 120,
             interactivity: {
               events: {
@@ -127,6 +132,7 @@ export const SparklesCore = (props: ParticlesProps) => {
               },
             },
             detectRetina: true,
+            ...options,
           }}
         />
       )}
