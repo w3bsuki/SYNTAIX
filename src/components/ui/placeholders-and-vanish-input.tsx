@@ -22,10 +22,7 @@ export function PlaceholdersAndVanishInput({
     }, 3000);
   };
   const handleVisibilityChange = () => {
-    if (document.visibilityState !== "visible" && intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    } else if (document.visibilityState === "visible") {
+    if (!document.hidden) {
       startAnimation();
     }
   };
@@ -33,14 +30,10 @@ export function PlaceholdersAndVanishInput({
   useEffect(() => {
     startAnimation();
     document.addEventListener("visibilitychange", handleVisibilityChange);
-
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [placeholders]);
+  }, [handleVisibilityChange, startAnimation]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
@@ -274,4 +267,4 @@ export function PlaceholdersAndVanishInput({
       </div>
     </form>
   );
-} 
+}

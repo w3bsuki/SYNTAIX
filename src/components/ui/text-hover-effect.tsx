@@ -4,12 +4,8 @@ import { motion } from "framer-motion";
 
 export const TextHoverEffect = ({
   text,
-  duration,
-  className,
 }: {
   text: string;
-  duration?: number;
-  className?: string;
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });

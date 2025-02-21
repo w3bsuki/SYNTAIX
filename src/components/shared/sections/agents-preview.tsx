@@ -2,9 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 import { VercelChat } from "@/components/ui/vercel-chat";
 import { BorderBeam } from "@/components/ui/border-beam";
