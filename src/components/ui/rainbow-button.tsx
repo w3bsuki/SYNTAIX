@@ -1,8 +1,9 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { ButtonProps } from "@/lib/types";
 
-interface RainbowButtonProps extends ButtonProps {
+interface RainbowButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'default' | 'outline';
+  size?: 'sm' | 'lg';
   children: React.ReactNode;
 }
 

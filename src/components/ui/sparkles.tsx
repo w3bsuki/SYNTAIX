@@ -1,6 +1,5 @@
 "use client";
-import React, { useId, useCallback, useState } from "react";
-import { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import type { Container } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
@@ -9,26 +8,12 @@ import { motion, useAnimation } from "framer-motion";
 type ParticlesProps = {
   id?: string;
   className?: string;
-  background?: string;
-  particleSize?: number;
-  minSize?: number;
-  maxSize?: number;
-  speed?: number;
-  particleColor?: string;
-  particleDensity?: number;
 };
 
+type ParticlesLoadedCallback = (container: Container) => void;
+
 export const SparklesCore = (props: ParticlesProps) => {
-  const {
-    id,
-    className,
-    background,
-    minSize,
-    maxSize,
-    speed,
-    particleColor,
-    particleDensity,
-  } = props;
+  const { id, className } = props;
   const [init, setInit] = useState(false);
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -39,7 +24,7 @@ export const SparklesCore = (props: ParticlesProps) => {
   }, []);
   const controls = useAnimation();
 
-  const particlesLoaded = async (container?: Container) => {
+  const particlesLoaded: ParticlesLoadedCallback = async (container) => {
     if (container) {
       controls.start({
         opacity: 1,
@@ -50,18 +35,21 @@ export const SparklesCore = (props: ParticlesProps) => {
     }
   };
 
-  const generatedId = useId();
+  const generatedId = useCallback(() => {
+    return Math.random().toString(36).substr(2, 9);
+  }, []);
+
   return (
     <motion.div animate={controls} className={`opacity-0 ${className}`}>
       {init && (
         <Particles
-          id={id || generatedId}
+          id={id || generatedId()}
           className={`h-full w-full`}
           particlesLoaded={particlesLoaded}
           options={{
             background: {
               color: {
-                value: background || "transparent",
+                value: "transparent",
               },
             },
             fullScreen: {
@@ -94,7 +82,7 @@ export const SparklesCore = (props: ParticlesProps) => {
             },
             particles: {
               color: {
-                value: particleColor || "#ffffff",
+                value: "#ffffff",
               },
               move: {
                 direction: "none",
@@ -115,7 +103,7 @@ export const SparklesCore = (props: ParticlesProps) => {
                   width: 400,
                   height: 400,
                 },
-                value: particleDensity || 80,
+                value: 80,
               },
               opacity: {
                 value: {
@@ -124,7 +112,7 @@ export const SparklesCore = (props: ParticlesProps) => {
                 },
                 animation: {
                   enable: true,
-                  speed: speed || 3,
+                  speed: 3,
                   sync: false,
                 },
               },
@@ -133,8 +121,8 @@ export const SparklesCore = (props: ParticlesProps) => {
               },
               size: {
                 value: {
-                  min: minSize || 1,
-                  max: maxSize || 2,
+                  min: 1,
+                  max: 2,
                 },
               },
             },

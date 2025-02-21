@@ -16,16 +16,22 @@ export function PlaceholdersAndVanishInput({
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const startAnimation = () => {
-    intervalRef.current = setInterval(() => {
-      setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
-    }, 3000);
+
+  type CustomEvent = {
+    target: HTMLElement;
   };
-  const handleVisibilityChange = () => {
+
+  const handleVisibilityChange = useCallback(() => {
     if (!document.hidden) {
       startAnimation();
     }
-  };
+  }, [startAnimation]);
+
+  const startAnimation = useCallback(() => {
+    intervalRef.current = setInterval(() => {
+      setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
+    }, 3000);
+  }, []);
 
   useEffect(() => {
     startAnimation();
