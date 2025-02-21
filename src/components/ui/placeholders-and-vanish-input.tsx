@@ -23,6 +23,13 @@ export function PlaceholdersAndVanishInput({
     }
   }, [startAnimation]);
 
+  useEffect(() => {
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [handleVisibilityChange]);
+
   const startAnimation = useCallback(() => {
     intervalRef.current = setInterval(() => {
       setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
@@ -31,11 +38,7 @@ export function PlaceholdersAndVanishInput({
 
   useEffect(() => {
     startAnimation();
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [handleVisibilityChange, startAnimation]);
+  }, [startAnimation]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<number[]>([]);
@@ -166,31 +169,47 @@ export function PlaceholdersAndVanishInput({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    vanishAndSubmit();
-    onSubmit && onSubmit(e);
+    if (onSubmit) {
+      onSubmit(e);
+    }
   };
 
-  const handleTransitionEnd = (event: { target: HTMLElement }) => {
+  const handleTransitionEndEvent = useCallback((event: { target: HTMLElement }) => {
     const target = event.target;
     if (target.classList.contains("vanish-input")) {
       setAnimating(false);
     }
-  };
+  }, []);
 
-  const handleAnimationIteration = (event: { target: HTMLElement }) => {
+  const handleAnimationIterationEvent = useCallback((event: { target: HTMLElement }) => {
     const target = event.target;
     if (target.classList.contains("vanish-input")) {
       setAnimating(true);
     }
-  };
+  }, []);
 
-  const handleReset = () => {
+  const handleResetEvent = useCallback(() => {
     const elements = document.querySelectorAll(".vanish-input");
-    for (const element of Array.from(elements)) {
+    elements.forEach((element) => {
       const targetElement = element as HTMLElement;
       targetElement.style.opacity = "0";
-    }
-  };
+    });
+  }, []);
+
+  useEffect(() => {
+    const elements = document.querySelectorAll(".vanish-input");
+    elements.forEach((element) => {
+      element.addEventListener("transitionend", handleTransitionEndEvent);
+      element.addEventListener("animationiteration", handleAnimationIterationEvent);
+    });
+
+    return () => {
+      elements.forEach((element) => {
+        element.removeEventListener("transitionend", handleTransitionEndEvent);
+        element.removeEventListener("animationiteration", handleAnimationIterationEvent);
+      });
+    };
+  }, [handleTransitionEndEvent, handleAnimationIterationEvent]);
 
   return (
     <form

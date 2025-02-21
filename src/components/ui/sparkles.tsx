@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
+import Particles, { initParticlesEngine, Engine, Container } from "@tsparticles/react";
 import type { Container } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { motion, useAnimation } from "framer-motion";
@@ -24,25 +24,25 @@ type ParticlesLoadedCallback = (container: Container) => Promise<void>;
 export const SparklesCore = (props: ParticlesProps) => {
   const { id, className, options } = props;
   const [init, setInit] = useState(false);
-  useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
-  }, []);
   const controls = useAnimation();
 
-  const particlesLoaded: ParticlesLoadedCallback = async (container) => {
+  const particlesLoaded = useCallback(async (container: Container | undefined) => {
     if (container) {
       controls.start({
         opacity: 1,
-        transition: {
-          duration: 1,
-        },
       });
     }
-  };
+  }, [controls]);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+  }, []);
+
+  useEffect(() => {
+    initParticlesEngine(particlesInit).then(() => {
+      setInit(true);
+    });
+  }, [particlesInit]);
 
   const generatedId = useCallback(() => {
     return Math.random().toString(36).substr(2, 9);
