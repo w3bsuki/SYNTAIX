@@ -1,25 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SparklesCore } from "@/components/ui/sparkles";
 
-// Option 1: Thin Font
 export function MarqueeSection() {
   return (
     <div className="relative w-full overflow-hidden bg-black py-24">
-      {/* Fixed sparkles background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <SparklesCore 
-          background="transparent"
-          minSize={0.4}
-          maxSize={1}
-          particleColor="#ffffff"
-          particleDensity={60}
-          speed={0.8}
-          className="h-full"
-        />
-      </div>
-
       {/* Marquee container */}
       <div className="relative flex overflow-x-hidden">
         <motion.div
