@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SparklesCore } from "@/components/ui/sparkles";
 
 export function CTA() {
   return (
@@ -15,19 +14,6 @@ export function CTA() {
       
       {/* Subtle grid pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-[0.1]" />
-
-      {/* Sparkles */}
-      <div className="absolute inset-0 pointer-events-none">
-        <SparklesCore 
-          background="transparent"
-          minSize={0.4}
-          maxSize={1}
-          particleColor="#ffffff"
-          particleDensity={30}
-          speed={0.8}
-          className="h-full"
-        />
-      </div>
 
       <div className="container max-w-6xl mx-auto px-4">
         <motion.div
